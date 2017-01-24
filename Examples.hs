@@ -10,3 +10,17 @@ pin0HIGH = wiringPiSetup >>
            digitalWrite 0 HIGH >>
            threadDelay 5000000 >>
            digitalWrite 0 LOW
+
+repeatIO :: Int -> IO () -> IO ()
+repeatIO n f
+    | n <= 0    = return ()
+    | otherwise = (f >> (repeatIO (n - 1) f))
+
+-- blinks by a diode in pin 0 ten times in 5 seconds
+pin0BLINK :: IO ()
+pin0BLINK = wiringPiSetup >>
+            pinMode 0 OUTPUT >>
+            repeatIO 10 (digitalWrite 0 HIGH >>
+                        threadDelay 250000 >>
+                        digitalWrite 0 LOW >>
+                        threadDelay 250000)

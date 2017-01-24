@@ -1,4 +1,4 @@
 import Examples
 
 main :: IO ()
-main = putStrLn "Hi!" >> pin0HIGH
+main = putStrLn "Hi!" >> pin0BLINK
