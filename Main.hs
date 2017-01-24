@@ -1,1 +1,4 @@
-main = putStrLn "Hello, world!"
+import Examples
+
+main :: IO ()
+main = putStrLn "Hi!" >> pin0HIGH
