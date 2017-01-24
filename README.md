@@ -6,4 +6,6 @@ WiringPi pins: see table here http://wiringpi.com/pins/ ("header" refer to physi
 Installation on raspbian: apt-get cabal-install, apt-get wiringPi, cabal install wiringPI... env, cabal run...
 WIRINGPI_GPIOMEM
 
-3mm diodes with ... Ohm resistors
+3mm diodes with 240 Ohm resistors
+
+diode "polarity" - short leg is minus
