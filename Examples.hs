@@ -1,7 +1,7 @@
 module Examples where
 
 import Control.Concurrent -- for _threadDelay_
-import Data.Word
+import Data.Bits -- for bitwise _and_, .&.
 import System.Hardware.WiringPi
 
 -- applies a voltage to wiringPi pin 0 for 5 seconds
@@ -53,3 +53,17 @@ pin0PWM = wiringPiSetup >>
                           | i <- [0..n]]
                     maxLevel' = fromIntegral maxLevel
                     n = 15 * 1000000 `div` maxLevel
+
+-- blinks (about 30 s) by diodes at pins 0, 1, 2, 3, like this diodes are bits of Word4 increasing
+-- on 1 every second
+pin0123Word4 :: IO ()
+pin0123Word4 =
+    wiringPiSetup >>
+    ioWith [0..3] (\pin -> pinMode pin OUTPUT) >>
+    ioWith [0..32] f
+        where f x = ioWith [0..3] (\pin -> digitalWrite pin (checkBit x $ fromIntegral pin)) >>
+                    threadDelay 1000000
+              checkBit :: Int -> Int -> Value
+              checkBit x pin
+                  | x .&. 2^pin == 0 = LOW
+                  | otherwise     = HIGH
